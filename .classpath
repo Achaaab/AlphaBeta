@@ -2,6 +2,5 @@
 <classpath>
 	<classpathentry kind="src" path="sources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Utilitaire2"/>
 	<classpathentry kind="output" path="binaries"/>
 </classpath>

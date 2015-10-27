@@ -1,2 +1,2 @@
 # AlphaBeta
-a quick and dirty Alpha-Bet√¢ framework
+a quick and dirty Alpha-BÍta framework
