@@ -7,7 +7,7 @@ import java.util.Random;
 /**
  * @author Jonathan Guéhenneux
  */
-public abstract class ZeroSumGame implements Game {
+public abstract class ZeroSumGame implements Game, Runnable {
 
 	private static final Random RANDOM = new Random();
 
@@ -17,7 +17,7 @@ public abstract class ZeroSumGame implements Game {
 	 * 
 	 */
 	public ZeroSumGame() {
-		this(2);
+		this(0);
 	}
 
 	/**
@@ -63,10 +63,38 @@ public abstract class ZeroSumGame implements Game {
 		return bestMove;
 	}
 
+	@Override
+	public void run() {
+
+		Player player;
+		Move move;
+
+		while (getWinner() == null) {
+
+			player = getCurrentPlayer();
+			move = player.getMove();
+			move.play();
+			updateView();
+			
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			nextPlayer();
+		}
+	}
+
 	/**
 	 * @return
 	 */
 	public abstract double getVictoryValue();
+
+	/**
+	 * 
+	 */
+	public abstract void updateView();
 
 	/**
 	 * @param previousPlayer
