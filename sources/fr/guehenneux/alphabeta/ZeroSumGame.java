@@ -17,7 +17,7 @@ public abstract class ZeroSumGame implements Game, Runnable {
 	 * 
 	 */
 	public ZeroSumGame() {
-		this(0);
+		this(2);
 	}
 
 	/**
@@ -41,7 +41,7 @@ public abstract class ZeroSumGame implements Game, Runnable {
 		for (Move move : moves) {
 
 			move.play();
-			moveValue = negaMax(currentPlayer, depth);
+			moveValue = -alphaBeta(currentPlayer, depth, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 			move.cancel();
 
 			if (moveValue > bestMoveValue) {
@@ -69,21 +69,23 @@ public abstract class ZeroSumGame implements Game, Runnable {
 		Player player;
 		Move move;
 
-		while (getWinner() == null) {
+		do {
 
 			player = getCurrentPlayer();
 			move = player.getMove();
+
+			System.out.println(move);
+
 			move.play();
 			updateView();
-			
+
 			try {
-				Thread.sleep(50);
+				Thread.sleep(0);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			
-			nextPlayer();
-		}
+
+		} while (getWinner() == null);
 	}
 
 	/**
@@ -101,46 +103,64 @@ public abstract class ZeroSumGame implements Game, Runnable {
 	 *            the player who played previously
 	 * @param depth
 	 *            the current depth
+	 * @param alpha
+	 * @param beta
 	 * @return the current player value
 	 */
-	private double negaMax(Player previousPlayer, int depth) {
+	private double alphaBeta(Player previousPlayer, int depth, double alpha, double beta) {
 
-		double negaMax;
+		double alphaBeta;
 
 		Player winner = getWinner();
 
 		if (winner == previousPlayer) {
 
-			negaMax = getVictoryValue();
+			alphaBeta = getVictoryValue();
 
 		} else {
 
+			Player currentPlayer = getCurrentPlayer();
+
 			if (depth == 0) {
 
-				negaMax = getHeuristicValue(previousPlayer);
+				alphaBeta = getHeuristicValue(currentPlayer);
 
 			} else {
 
-				negaMax = Double.NEGATIVE_INFINITY;
+				alphaBeta = Double.NEGATIVE_INFINITY;
 
-				Player currentPlayer = getCurrentPlayer();
+				List<Move> moves = currentPlayer.getMoves();
+				double alphaBetaMove;
 
-				List<Move> coups = currentPlayer.getMoves();
-				double negaMaxCoup;
+				for (Move move : moves) {
 
-				for (Move coup : coups) {
+					move.play();
+					alphaBetaMove = -alphaBeta(currentPlayer, depth - 1, -beta, -alpha);
+					move.cancel();
 
-					coup.play();
-					negaMaxCoup = -negaMax(currentPlayer, depth - 1);
-					coup.cancel();
+					if (alphaBetaMove > alphaBeta) {
 
-					if (negaMaxCoup > negaMax) {
-						negaMax = negaMaxCoup;
+						alphaBeta = alphaBetaMove;
+
+						if (alphaBeta > alpha) {
+
+							alpha = alphaBeta;
+
+							if (alpha >= beta) {
+								return alphaBeta;
+							}
+						}
 					}
 				}
 			}
 		}
 
-		return negaMax;
+		// for (int d = depth; d < this.depth; d++) {
+		// System.out.print('\t');
+		// }
+		//
+		// System.out.println(alphaBeta);
+
+		return alphaBeta;
 	}
 }
