@@ -41,8 +41,10 @@ public abstract class ZeroSumGame implements Game, Runnable {
 		for (Move move : moves) {
 
 			move.play();
-			moveValue = -alphaBeta(currentPlayer, depth, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+			moveValue = -alphaBeta(depth, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 			move.cancel();
+
+			System.out.println(move + " --> " + moveValue);
 
 			if (moveValue > bestMoveValue) {
 
@@ -99,67 +101,61 @@ public abstract class ZeroSumGame implements Game, Runnable {
 	public abstract void updateView();
 
 	/**
-	 * @param previousPlayer
-	 *            the player who played previously
 	 * @param depth
 	 *            the current depth
 	 * @param alpha
 	 * @param beta
 	 * @return the current player value
 	 */
-	private double alphaBeta(Player previousPlayer, int depth, double alpha, double beta) {
+	private double alphaBeta(int depth, double alpha, double beta) {
 
 		double alphaBeta;
 
+		Player currentPlayer = getCurrentPlayer();
 		Player winner = getWinner();
 
-		if (winner == previousPlayer) {
+		if (winner == currentPlayer) {
 
 			alphaBeta = getVictoryValue();
 
+		} else if (depth == 0) {
+
+			alphaBeta = getHeuristicValue(currentPlayer);
+
 		} else {
 
-			Player currentPlayer = getCurrentPlayer();
+			alphaBeta = Double.NEGATIVE_INFINITY;
 
-			if (depth == 0) {
+			List<Move> moves = currentPlayer.getMoves();
+			double alphaBetaMove;
 
-				alphaBeta = getHeuristicValue(currentPlayer);
+			for (Move move : moves) {
 
-			} else {
+				move.play();
+				alphaBetaMove = -alphaBeta(depth - 1, -beta, -alpha);
 
-				alphaBeta = Double.NEGATIVE_INFINITY;
+				// for (int d = depth; d <= this.depth; d++) {
+				// System.out.print('\t');
+				// }
+				// System.out.println(move + " --> " + alphaBetaMove);
 
-				List<Move> moves = currentPlayer.getMoves();
-				double alphaBetaMove;
+				move.cancel();
 
-				for (Move move : moves) {
+				if (alphaBetaMove > alphaBeta) {
 
-					move.play();
-					alphaBetaMove = -alphaBeta(currentPlayer, depth - 1, -beta, -alpha);
-					move.cancel();
+					alphaBeta = alphaBetaMove;
 
-					if (alphaBetaMove > alphaBeta) {
+					if (alphaBeta > alpha) {
 
-						alphaBeta = alphaBetaMove;
+						alpha = alphaBeta;
 
-						if (alphaBeta > alpha) {
-
-							alpha = alphaBeta;
-
-							if (alpha >= beta) {
-								return alphaBeta;
-							}
+						if (alpha >= beta) {
+							return alphaBeta;
 						}
 					}
 				}
 			}
 		}
-
-		// for (int d = depth; d < this.depth; d++) {
-		// System.out.print('\t');
-		// }
-		//
-		// System.out.println(alphaBeta);
 
 		return alphaBeta;
 	}
