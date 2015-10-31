@@ -3,15 +3,26 @@ package fr.guehenneux.alphabeta;
 /**
  * @author Jonathan Guéhenneux
  */
-public interface Move {
+public interface Move extends Comparable<Move> {
 
 	/**
 	 * play the move
 	 */
-	public abstract void play();
+	void play();
 
 	/**
 	 * cancel the move
 	 */
-	public abstract void cancel();
+	void cancel();
+
+	/**
+	 * @return the move value
+	 */
+	double getValue();
+
+	/**
+	 * @param value
+	 *            the move value
+	 */
+	void setValue(double value);
 }
