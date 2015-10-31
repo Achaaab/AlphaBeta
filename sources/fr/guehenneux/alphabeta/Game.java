@@ -7,33 +7,42 @@ public interface Game {
 
 	/**
 	 * @param player
-	 * @return
+	 * @return the heuristic value for the specified player
 	 */
-	public abstract double getHeuristicValue(Player player);
+	double getHeuristicValue(Player player);
+
+	/**
+	 * @return the winning move value
+	 */
+	double getWinningMoveValue();
+
+	/**
+	 * @return the current player
+	 */
+	Player getCurrentPlayer();
 
 	/**
 	 * 
-	 * @return le joueur dont c'est le tour
 	 */
-	public abstract Player getCurrentPlayer();
+	void nextPlayer();
 
 	/**
 	 * 
 	 */
-	public abstract void nextPlayer();
-
-	/**
-	 * 
-	 */
-	public abstract void previousPlayer();
-
-	/**
-	 * @return the best move to play
-	 */
-	public abstract Move getBestMove();
+	void previousPlayer();
 
 	/**
 	 * @return the winner if any or {@code null} if none (game not finished or draw)
 	 */
-	public abstract Player getWinner();
+	Player getWinner();
+
+	/**
+	 * @return whether the game is draw
+	 */
+	boolean isDraw();
+
+	/**
+	 * update the game GUI
+	 */
+	void updateGui();
 }
