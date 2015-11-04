@@ -16,7 +16,7 @@ public abstract class ZeroSumGame implements Game, Runnable {
 			player = getCurrentPlayer();
 			move = player.getMove();
 			move.play();
-			updateGui();
+			updateUI();
 
 		}
 	}
@@ -24,5 +24,5 @@ public abstract class ZeroSumGame implements Game, Runnable {
 	/**
 	 * 
 	 */
-	public abstract void updateGui();
+	public abstract void updateUI();
 }

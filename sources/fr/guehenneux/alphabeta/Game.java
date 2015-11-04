@@ -42,7 +42,7 @@ public interface Game {
 	boolean isDraw();
 
 	/**
-	 * update the game GUI
+	 * update the user interface
 	 */
-	void updateGui();
+	void updateUI();
 }
