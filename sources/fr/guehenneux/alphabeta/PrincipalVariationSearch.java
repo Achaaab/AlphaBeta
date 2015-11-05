@@ -30,6 +30,7 @@ public class PrincipalVariationSearch implements DecisionAlgorithm {
 
 		Player currentPlayer = game.getCurrentPlayer();
 		List<Move> moves = currentPlayer.getMoves();
+		sortMoves(moves);
 		List<Move> bestMoves = new LinkedList<Move>();
 
 		double moveValue;
@@ -39,7 +40,7 @@ public class PrincipalVariationSearch implements DecisionAlgorithm {
 		for (Move move : moves) {
 
 			move.play();
-			moveValue = -getMoveValue(depth - 1, alpha, beta);
+			moveValue = -getMoveValue(depth - 1, -beta, -alpha);
 			move.cancel();
 
 			if (moveValue > alpha) {
@@ -87,37 +88,37 @@ public class PrincipalVariationSearch implements DecisionAlgorithm {
 		} else {
 
 			List<Move> moves = currentPlayer.getMoves();
+			sortMoves(moves);
 
 			double moveValue;
-			boolean principalVariation = true;
+			boolean firstMove = true;
 
 			for (Move move : moves) {
 
 				move.play();
 
-				if (principalVariation) {
+				if (firstMove) {
 
 					moveValue = -getMoveValue(depth - 1, -beta, -alpha);
+					firstMove = false;
 
 				} else {
 
 					moveValue = -getMoveValue(depth - 1, -alpha - 1, -alpha);
 
-					if (moveValue > alpha) {
+					if (moveValue > alpha && moveValue < beta) {
 						moveValue = -getMoveValue(depth - 1, -beta, -alpha);
 					}
 				}
 
 				move.cancel();
 
-				if (moveValue >= beta) {
-					return moveValue;
+				if (moveValue > alpha) {
+					alpha = moveValue;
 				}
 
-				if (moveValue > alpha) {
-
-					alpha = moveValue;
-					principalVariation = false;
+				if (alpha >= beta) {
+					return alpha;
 				}
 			}
 		}
