@@ -16,11 +16,11 @@ public abstract class ZeroSumGame implements Game, Runnable {
 			player = getCurrentPlayer();
 			move = player.getMove();
 			move.play();
-			
+
 			updateUI();
-			
+
 			try {
-				Thread.sleep(500);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

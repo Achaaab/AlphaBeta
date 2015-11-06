@@ -14,15 +14,18 @@ public class PrincipalVariationSearch implements DecisionAlgorithm {
 
 	private TwoPlayersZeroSumGame game;
 	private int depth;
+	private boolean deterministic;
 
 	/**
 	 * @param game
-	 * @param depath
+	 * @param depth
+	 * @param determinisitic
 	 */
-	public PrincipalVariationSearch(TwoPlayersZeroSumGame game, int depth) {
+	public PrincipalVariationSearch(TwoPlayersZeroSumGame game, int depth, boolean deterministic) {
 
 		this.game = game;
 		this.depth = depth;
+		this.deterministic = deterministic;
 	}
 
 	@Override
@@ -49,7 +52,7 @@ public class PrincipalVariationSearch implements DecisionAlgorithm {
 				bestMoves.add(move);
 				alpha = moveValue;
 
-			} else if (moveValue == alpha) {
+			} else if (moveValue == alpha && !deterministic) {
 
 				bestMoves.add(move);
 			}
@@ -118,7 +121,7 @@ public class PrincipalVariationSearch implements DecisionAlgorithm {
 				}
 
 				if (alpha >= beta) {
-					return alpha;
+					break;
 				}
 			}
 		}
