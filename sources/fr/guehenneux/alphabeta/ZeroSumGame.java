@@ -26,6 +26,8 @@ public abstract class ZeroSumGame implements Game, Runnable {
 				e.printStackTrace();
 			}
 		}
+
+		System.out.println(getWinner());
 	}
 
 	/**
