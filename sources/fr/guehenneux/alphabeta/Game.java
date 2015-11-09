@@ -1,5 +1,7 @@
 package fr.guehenneux.alphabeta;
 
+import java.util.Stack;
+
 /**
  * @author Jonathan Guéhenneux
  */
@@ -40,6 +42,26 @@ public interface Game {
 	 * @return whether the game is draw
 	 */
 	boolean isDraw();
+
+	/**
+	 * @param move
+	 */
+	void addMove(Move move);
+
+	/**
+	 * @param move
+	 */
+	void removeMove();
+
+	/**
+	 * @return the last move if any, {@code null} if none
+	 */
+	Move getLastMove();
+
+	/**
+	 * @return the played moves
+	 */
+	Stack<Move> getMoves();
 
 	/**
 	 * update the user interface

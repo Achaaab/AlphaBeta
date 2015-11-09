@@ -1,9 +1,20 @@
 package fr.guehenneux.alphabeta;
 
+import java.util.Stack;
+
 /**
  * @author Jonathan Guéhenneux
  */
 public abstract class ZeroSumGame implements Game, Runnable {
+
+	protected Stack<Move> moves;
+
+	/**
+	 * 
+	 */
+	public ZeroSumGame() {
+		moves = new Stack<>();
+	}
 
 	@Override
 	public void run() {
@@ -22,7 +33,6 @@ public abstract class ZeroSumGame implements Game, Runnable {
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -34,4 +44,33 @@ public abstract class ZeroSumGame implements Game, Runnable {
 	 * 
 	 */
 	public abstract void updateUI();
+
+	@Override
+	public Move getLastMove() {
+
+		Move lastMove;
+
+		if (moves.isEmpty()) {
+			lastMove = null;
+		} else {
+			lastMove = moves.peek();
+		}
+
+		return lastMove;
+	}
+
+	@Override
+	public Stack<Move> getMoves() {
+		return moves;
+	}
+
+	@Override
+	public void addMove(Move move) {
+		moves.push(move);
+	}
+
+	@Override
+	public void removeMove() {
+		moves.pop();
+	}
 }

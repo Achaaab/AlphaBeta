@@ -6,6 +6,14 @@ package fr.guehenneux.alphabeta;
 public abstract class AbstractMove implements Move {
 
 	protected double value;
+	private Game game;
+
+	/**
+	 * @param game
+	 */
+	public AbstractMove(Game game) {
+		this.game = game;
+	}
 
 	@Override
 	public int compareTo(Move move) {
@@ -23,6 +31,20 @@ public abstract class AbstractMove implements Move {
 		}
 
 		return comparison;
+	}
+
+	@Override
+	public void play() {
+
+		game.addMove(this);
+		game.nextPlayer();
+	}
+
+	@Override
+	public void cancel() {
+
+		game.removeMove();
+		game.previousPlayer();
 	}
 
 	@Override
