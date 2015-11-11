@@ -44,6 +44,8 @@ public class AlphaBeta implements DecisionAlgorithm {
 
 		for (Move move : moves) {
 
+			// System.out.println(move);
+
 			move.play();
 			moveValue = -getMoveValue(1, -beta, -alpha);
 			move.cancel();
@@ -89,6 +91,10 @@ public class AlphaBeta implements DecisionAlgorithm {
 
 			alphaBeta = game.getWinningMoveValue() - depth;
 
+		} else if (winner != null && winner != currentPlayer) {
+
+			alphaBeta = depth - game.getWinningMoveValue();
+
 		} else if (game.isDraw()) {
 
 			alphaBeta = 0;
@@ -106,6 +112,12 @@ public class AlphaBeta implements DecisionAlgorithm {
 			alphaBeta = Double.NEGATIVE_INFINITY;
 
 			for (Move move : moves) {
+
+				// for (int d = 0; d < depth; d++) {
+				// System.out.print(' ');
+				// }
+				//
+				// System.out.println(move);
 
 				move.play();
 				moveValue = -getMoveValue(depth + 1, -beta, -alpha);

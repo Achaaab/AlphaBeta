@@ -30,6 +30,8 @@ public class MiniMax implements DecisionAlgorithm {
 	@Override
 	public Move getBestMove() {
 
+		game.getWinner();
+
 		Player currentPlayer = game.getCurrentPlayer();
 		List<Move> moves = currentPlayer.getMoves();
 		List<Move> bestMoves = new LinkedList<Move>();
@@ -58,6 +60,8 @@ public class MiniMax implements DecisionAlgorithm {
 		int bestMoveCount = bestMoves.size();
 		int bestMoveIndex = RANDOM.nextInt(bestMoveCount);
 		Move bestMove = bestMoves.get(bestMoveIndex);
+
+		bestMove.setValue(minimax);
 
 		return bestMove;
 	}
